@@ -42,7 +42,7 @@ class AddonsXML(object):
         sys.stderr.write("Writing {0}\n".format(md5_path))
         # create a new md5 hash
         m = hashlib.new("md5")
-        m.update(open(xml_path).read())
+        m.update(open(xml_path).read().encode("utf8"))
         # save file
         with open(md5_path, "w") as out:
             out.write(m.hexdigest())
