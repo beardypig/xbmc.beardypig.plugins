@@ -6,7 +6,8 @@ after_success:
 - eval "$(ssh-agent -s)"
 - chmod 600 .travis/deploy_key.pem
 - ssh-add .travis/deploy_key.pem
-- git remote add deploy
+- git commit -m "updated addons.xml and addons.xml.md5" addons.xml addons.xml.md5
+- git remote add deploy git@github.com:beardypig/xbmc.beardypig.plugins.git
 - git push deploy deploy
 before_install:
 - openssl aes-256-cbc -K $encrypted_aef3a89f5763_key -iv $encrypted_aef3a89f5763_iv
