@@ -45,9 +45,7 @@ class S3AddonsXML(object):
             addons_xml.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n")
             addons_xml.write("<addons>\n")
             for addon in self.xmls:
-                for line in addon:
-                    if not line.startswith("<?xml"):
-                        addons_xml.write(line)
+                addons_xml.writelines([line+"\n" for line in addon.splitlines() if not line.startswith("<?xml")])
             addons_xml.write("</addons>\n")
 
     def add(self, path, date):
