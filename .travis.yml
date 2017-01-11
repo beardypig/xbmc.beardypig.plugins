@@ -1,19 +1,15 @@
 language: python
 python:
 - '3.5'
-script: python addons.py addons/*
-after_success:
-- eval "$(ssh-agent -s)"
-- chmod 600 .travis/deploy_key.pem
-- ssh-add .travis/deploy_key.pem
-- touch index.html
-- git checkout -b gh-pages-staging
-- git config --global user.email "build@travis-ci.org"
-- git config --global user.name "Travis CI"
-- git add -f addons.xml addons.xml.md5 index.html
-- git commit -m "updated addons.xml and addons.xml.md5"
-- git remote add deploy git@github.com:beardypig/xbmc.beardypig.plugins.git
-- git push -f deploy gh-pages-staging:gh-pages
-before_install:
-- openssl aes-256-cbc -K $encrypted_aef3a89f5763_key -iv $encrypted_aef3a89f5763_iv
-  -in deploy_key.pem.enc -out .travis/deploy_key.pem -d
+before_script: mkdir -p dist
+script: ./index-addons.py --out-dir dist xbmc.beardypig.plugins
+deploy:
+  provider: s3
+  skip_cleanup: true
+  local_dir: dist/
+  access_key_id: AKIAJA536STKTMHCZFZQ
+  secret_access_key:
+    secure: HlZcjf0NPmNT0KYTjllhwbO0QZAl5XE77uI6ZRcylg8NIzbx0aKY1oGSI/hw0Iavp5HMY4fxSLU9NFs9n1h4r/5bJdWroOIfHEbasoXdiqyZgQBT+F/rNpy3E2jQFAzP8XTz9IN3SWtwZMImHKVoK1SUoH8Q1TAFaCuGshCQOqYTsxzJktqNYvDUwcJB7UnxuGjzTxtjXUOMt/yAxbQMuDYohRx+HSVI3BeBSwlCG/nSn/1GwsjBje1yZTdx5sNI8DxNM4+z/EawuJdw3QruQM+UhpYwNfZAtbULxrk9F9twSn+43J8mp9KvNFCNxvWeGz05C4zpsBotgJNsYSRkJrixP9PiinUtgn4AuB0Vtj69+gSH4TrslFtDYyxt0p4Ygd903OknssIHT7qpV/Vc40bgzbsFyIbiI2GlGs3mAED1zDPTWlDG6TI4TDeq8hZGZnaYDMrnyoRhnF33kA7or6jz/T70ifTDJc/jgCM+2Fdmnh6Av79FQ4dCYvt6NLQ9cEe3JEOhzu94Mdxb+smsE/wGr2zmRzbLC/B3Hd0FP9rCaC4cCteLvzpRm3NKFWSultrqtw8wwwLSbWS4sWDydDurlZ/NF/7erW111WFntwOCnpBCrRA8IOb8ASMTv665HlpoyskoBoSFe13MliALNv1n35iSk+b14y9jA4OTkUc=
+  bucket: xbmc.beardypig.plugins
+  on:
+    repo: beardypig/xbmc.beardypig.plugins
