@@ -1,6 +1,6 @@
 language: python
 python:
-- '3.5'
+- '3.4'
 before_script: mkdir -p dist
 script: ./index-addons.py --out-dir dist xbmc.beardypig.plugins
 deploy:
